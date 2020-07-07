@@ -1,0 +1,391 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Configuration for the default package. -->
+    <package name="default" extends="json-default,struts-default">
+        <action name="checkLogin" class="App.Login.LoginAction" method="login">
+            <result name="ADMIN" type="redirectAction">
+                loadCourse
+            </result>
+            <result name="TRAINER" type="redirectAction">
+                <param name="actionName">loadTrainerCourse</param>
+                <param name="username">${username}</param>
+            </result>
+            <result name="STAFF" type="redirectAction">
+                loadCourse
+            </result>
+            <result name="FAILED">
+                /Login.jsp
+            </result>
+        </action>
+        <action name="logoutAction" class="App.Login.LoginAction" method="logout">
+            <result name="LOGGEDOUT">
+                /Login.jsp
+            </result>
+        </action>
+        <action name="updateProfile" class="App.Login.LoginAction" method="userUpdateProfile">
+            <result name="UPDATEPROFILESUCCESS" type="json">/navigationbar.jsp</result>
+            <result name="UPDATEPROFILEFAILED" type="json">/navigationbar.jsp</result>
+        </action>
+            
+        <action name="getPassword" class="App.Login.LoginAction" method="sendPassword">
+            <result name="SUCCESS">/RecoveryPassword.jsp</result>
+            <result name="ERROR">/RecoveryPassword.jsp</result>
+            <result name="FAILED">/RecoveryPassword.jsp</result>
+        </action>
+        <action name="loadCourse" class="App.ManageCourse.CourseAction" method="getData">
+            <result name="DATA">
+                /ViewCourse.jsp
+            </result>
+            <result name="SEARCHDATA">
+                /ViewCourse.jsp
+            </result>
+        </action>
+        <action name="fetchCourse" class="App.ManageCourse.CourseAction" method="getData">
+            <result name="DATA" type="json">
+                /ViewCourse.jsp
+            </result>
+        </action>
+        <action name="searchCourse" class="App.ManageCourse.CourseAction" method="searchCourse">
+            <result name="SEARCHDATA" type="json">/ViewCourse.jsp</result>
+        </action>
+        
+        <action name="deleteCourse" class="App.ManageCourse.CourseAction" method="deleteCourse">
+            <result name="DELETED" type="redirectAction">
+                <param name="actionName">loadCourse</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="DELETEFAILED" type="redirectAction">
+                <param name="actionName">loadCourse</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+                
+        <action name="loadFormAddNewCourse" class="App.ManageCourse.CourseAction" method="loadTopicAndCategory">
+            <result name="LISTCATEGORYANDTOPIC">
+                /AddNewCourse.jsp
+            </result>
+        </action>
+        
+        <action name="addNewCourse" class="App.ManageCourse.CourseAction" method="addCourse">
+            <result name="ADDCOURSESUCCESS" type="redirectAction">
+                <param name="actionName">loadCourse</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="ADDCOURSEFAILED" type="redirectAction">
+                <param name="actionName">loadCourse</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="viewDetailCourse" class="App.ManageCourse.CourseAction" method="getDetail">
+            <result name="COURSEDETAILFORVIEW">
+                /DetailCourse.jsp
+            </result>
+            <result name="COURSEDETAILFORUPDATE">
+                /UpdateCourse.jsp
+            </result>
+        </action>
+        
+        <action name="updateCourse" class="App.ManageCourse.CourseAction" method="updateCourse">
+            <result name="UPDATECOURSESUCCESS" type="redirectAction">
+                <param name="actionName">loadCourse</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="UPDATECOURSEFAILED" type="redirectAction">
+                <param name="actionName">loadCourse</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="loadCategory" class="App.ManageCategory.CategoryAction" method="getData">
+            <result name="CATEGORYLIST">
+                /ViewCategory.jsp
+            </result>
+        </action>
+        
+        <action name="fetchCategory" class="App.ManageCategory.CategoryAction" method="getData">
+            <result name="CATEGORYLIST" type="json">
+                /ViewCategory.jsp
+            </result>
+        </action>
+        
+        <action name="checkCategoryName" class="App.ManageCategory.CategoryAction" method="checkCategoryName">
+            <result name="VALID" type="json">/AddNewCategory.jsp</result>
+            <result name="INVALID" type="json">/AddNewCategory.jsp</result>
+        </action>
+        <action name="searchCategory" class="App.ManageCategory.CategoryAction" method="searchCategory">
+            <result name="SEARCHLIST" type="json">
+                /ViewCategory.jsp
+            </result>
+        </action>
+        
+        <action name="loadTopicDetail" class="App.ManageTopic.TopicAction" method="getTopicDetailData">
+            <result name="TOPICDETAIL" type="json">/AddNewCourse.jsp</result>
+            <result name="TOPICDETAILFORUPDATE">/UpdateCourse.jsp</result>
+        </action>
+        
+        <action name="addCategory" class="App.ManageCategory.CategoryAction" method="addCategory">
+            <result name="ADDCATEGORYSUCCESS" type="redirectAction">
+                <param name="actionName">loadCategory</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="ADDCATEGORYFAILED" type="redirectAction">
+                <param name="actionName">loadCategory</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        
+        <action name="deleteCategory" class="App.ManageCategory.CategoryAction" method="deleteCategory">
+            <result name="DELETESUCCESS" type="redirectAction">
+                <param name="actionName">loadCategory</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="DELETEFAILED" type="redirectAction">
+                <param name="actionName">loadCategory</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        
+        <action name="loadAssignForm" class="App.ManageCourse.CourseAction" method="loadTraineeAssign">
+            <result name="LOADASSIGNFORM">/AssignTraineeToCourse.jsp</result>
+        </action>
+        
+        <action name="searchTraineeInCourse" class="App.ManageTrainee.TraineeAction" method="searchTraineeInCourse">
+            <result name="SEARCHINLIST" type="json">/AssignTraineeToCourse.jsp</result>
+        </action>
+        <action name="fetchTraineeInCourse" class="App.ManageTrainee.TraineeAction" method="getTraineeInCourse">
+            <result name="LISTTRAINEEINCOURSE" type="json">/AssignTraineeToCourse.jsp</result>
+        </action>
+        <action name="fetchTraineeOutCourse" class="App.ManageTrainee.TraineeAction" method="getTraineeOutCourse">
+            <result name="LISTTRAINEEOUTCOURSE" type="json">/AssignTraineeToCourse.jsp</result>
+        </action>
+        <action name="searchTraineeOutCourse" class="App.ManageTrainee.TraineeAction" method="searchTraineeOutCourse">
+            <result name="SEARCHOUTLIST" type="json">/AssignTraineeToCourse.jsp</result>
+        </action>
+        
+        <action name="assignTraineeToCourse" class="App.ManageCourse.CourseAction" method="assignTrainee">
+            <result name="ASSIGNSUCCESS" type="redirectAction">
+                <param name="actionName">loadAssignForm</param>
+                <param name="courseID">${courseID}</param>
+            </result>
+            <result name="ASSIGNFAILED">
+                <param name="actionName">loadAssignForm</param>
+                <param name="courseID">${courseID}</param>
+            </result>
+        </action>
+        
+        <action name="removeTraineeFromCourse" class="App.ManageCourse.CourseAction" method="removeTraineeFromCourse">
+            <result name="REMOVESUCCESS" type="redirectAction">
+                <param name="actionName">loadAssignForm</param>
+                <param name="courseID">${courseID}</param>
+            </result>
+            <result name="REMOVEFAILED">
+                <param name="actionName">loadAssignForm</param>
+                <param name="courseID">${courseID}</param>
+            </result>
+        </action>
+        
+        <action name="viewTrainee" class="App.ManageTrainee.TraineeAction" method="getData">
+            <result name="TRAINEELIST">
+                /ViewTraineeAccount.jsp
+            </result>
+        </action>
+        <action name="addNewTrainee" class="App.ManageTrainee.TraineeAction" method="addTrainee">
+            <result name="ADDSUCCESS" type="redirectAction">
+                <param name="actionName">viewTrainee</param>
+                <param name="msg">${msg}</param></result>
+            <result name="ADDFAILED" type="redirectAction">
+                <param name="actionName">viewTrainee</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="deleteTrainee" class="App.ManageTrainee.TraineeAction" method="deleteTrainee">
+            <result name="DELETESUCCESS" type="redirectAction">
+                <param name="actionName">viewTrainee</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="DELETEFAILED" type="redirectAction">
+                <param name="actionName">viewTrainee</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="updateTrainee" class="App.ManageTrainee.TraineeAction" method="updateTrainee">
+            <result name="UPDATETRAINEESUCCESS" type="redirectAction">
+                <param name="actionName">viewTrainee</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="UPDATETRAINEEFAILED" type="redirectAction">
+                <param name="actionName">viewTrainee</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="detailTrainee" class="App.ManageTrainee.TraineeAction" method="getDataByID">
+            <result name="DETAILTRAINEEFORUPDATE">/UpdateTrainee.jsp</result>
+            <result name="DETAILTRAINEEFORVIEW">/DetailTrainee.jsp</result>
+        </action>
+        <action name="viewTrainer" class="App.ManageTrainer.TrainerAction" method="getData">
+            <result name="TRAINERLIST">
+                /ViewTrainerAccount.jsp
+            </result>
+        </action>
+        <action name="updateTrainer" class="App.ManageTrainer.TrainerAction" method="updateTrainer">
+            <result name="UPDATESUCCESS" type="redirectAction">
+                <param name="actionName">viewTrainer</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="UPDATEFAILED" type="redirectAction">
+                <param name="actionName">viewTrainer</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="detailTrainer" class="App.ManageTrainer.TrainerAction" method="getDataByID">
+            <result name="TRAINERDETAILFORUPDATE">
+                /UpdateTrainer.jsp
+            </result>
+            <result name="TRAINERDETAIL">
+                /DetailTrainer.jsp
+            </result>
+        </action>
+        <action name="loadTopicDetailDescription" class="App.ManageTopic.TopicAction" method="getTopicDetailData1">
+            <result name="TOPICDETAIL" type="json">/AddNewTrainer.jsp</result>
+            <result name="TOPICDETAILFORUPDATE" type="json">/UpdateTrainer.jsp</result>                
+        </action>
+        
+        <action name="loadAddNewCategory" class="App.ManageCategory.CategoryAction" method="loadAddCategoryForm">
+            <result name="LISTFORCHECK">/AddNewCategory.jsp</result>
+        </action>
+        <action name="loadDetailCategory" class="App.ManageCategory.CategoryAction" method="getDataByID">
+            <result name="DETAILCATEGORYFORVIEW">/DetailCategory.jsp</result>
+            <result name="DETAILCATEGORYFORUPDATE">/UpdateCategory.jsp</result>
+        </action>
+        <action name="updateCategory" class="App.ManageCategory.CategoryAction" method="updateCategory">
+            <result name="UPDATESUCCESS" type="redirectAction">loadCategory</result>
+            <result name="UPDATEFAILED">/Error.jsp</result>
+        </action>
+        
+        <action name="loadTopic" class="App.ManageTopic.TopicAction" method="getData">
+            <result name="TOPICLIST">/ViewTopic.jsp</result>
+        </action>
+        
+        <action name="fetchTopic" class="App.ManageTopic.TopicAction" method="getData">
+            <result name="TOPICLIST" type="json">/ViewTopic.jsp</result>
+        </action>
+        <action name="searchTopic" class="App.ManageTopic.TopicAction" method="searchTopic">
+            <result name="SEARCHLIST" type="json">/ViewTopic.jsp</result>
+        </action>
+            
+        <action name="deleteTopic" class="App.ManageTopic.TopicAction" method="deleteTopic">
+            <result name="DELETESUCCESS" type="redirectAction">
+                <param name="actionName">loadTopic</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="DELETEFAILED" type="redirectAction">
+                <param name="actionName">loadTopic</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="addTopic" class="App.ManageTopic.TopicAction" method="addTopic">
+            <result name="ADDSUCCESS" type="redirectAction">
+                <param name="actionName">loadTopic</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="ADDFAILED" type="redirectAction">
+                <param name="actionName">loadTopic</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="loadAddNewTopic" class="App.ManageTopic.TopicAction" method="loadAddNewTopic">
+            <result name="LOADADDNEWTOPIC">/AddNewTopic.jsp</result>
+        </action>
+        <action name="getTopicDetail" class="App.ManageTopic.TopicAction" method="getTopicDetailData">
+            <result name="TOPICDETAILFORUPDATE">/UpdateTopic.jsp</result>
+            <result name="TOPICDETAIL">/DetailTopic.jsp</result>
+        </action>
+        <action name="updateTopic" class="App.ManageTopic.TopicAction" method="updateTopic">
+            <result name="UPDATESUCCESS" type="redirectAction">
+                <param name="actionName">loadTopic</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="UPDATEFAILED" type="redirectAction">
+                <param name="actionName">loadTopic</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        
+        <action name="loadAddNewTrainerForm" class="App.ManageTopic.TopicAction" method="getData">
+            <result name="TOPICLIST">/AddNewTrainer.jsp</result>
+        </action>
+        <action name="addTrainer" class="App.ManageTrainer.TrainerAction" method="addTrainer">
+            <result name="ADDTRAINERSUCCESS" type="redirectAction">
+                <param name="actionName">viewTrainer</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="ADDTRAINERFAILED">/Error.jsp</result>
+        </action>
+        <action name="deleteTrainer" class="App.ManageTrainer.TrainerAction" method="deleteTrainer">
+            <result name="DELETETRAINERSUCCESS" type="redirectAction">
+                <param name="actionName">viewTrainer</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="DELETETRAINERFAILED" type="redirectAction">
+                <param name="actionName">viewTrainer</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="loadTrainerCourse" class="App.ManageTrainer.TrainerAction" method="getTrainerCourse">
+            <result name="LISTTRAINERCOURSE">
+                /Trainer.jsp
+            </result>
+        </action>
+        <action name="trainerLoadDetailCourse" class="App.ManageCourse.CourseAction" method="trainerGetDetailCourse">
+            <result name="COURSEDETAILFORVIEW">
+                /TrainerViewDetailCourse.jsp
+            </result>
+        </action>
+        <action name="viewStaff" class="App.ManageStaff.StaffAction" method="getData">
+            <result name="LISTSTAFF">
+                /ViewTrainingStaff.jsp
+            </result>
+        </action>
+        <action name="searchStaff" class="App.ManageStaff.StaffAction" method="searchData">
+            <result name="LISTSEARCHSTAFF">
+                /ViewTrainingStaff.jsp
+            </result>
+        </action>
+        <action name="addStaff" class="App.ManageStaff.StaffAction" method="addStaff">
+            <result name="ADDSUCCESS" type="redirectAction">
+                <param name="actionName">viewStaff</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="ADDFAILED" type="redirectAction">
+                <param name="actionName">viewStaff</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="deleteStaff" class="App.ManageStaff.StaffAction" method="deleteStaff">
+            <result name="DELETESUCCESS" type="redirectAction">
+                <param name="actionName">viewStaff</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="DELETEFAILED" type="redirectAction">
+                <param name="actionName">viewStaff</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+        <action name="detailStaff" class="App.ManageStaff.StaffAction" method="detailStaff">
+            <result name="DETAILSTAFF">/DetailStaff.jsp</result>
+            <result name="DETAILSTAFFFORUPDATE">/EditTrainingStaff.jsp</result>
+        </action>
+        <action name="updateStaff" class="App.ManageStaff.StaffAction" method="updateStaff">
+            <result name="UPDATESUCCESS" type="redirectAction">
+                <param name="actionName">viewStaff</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="UPDATEFAILED" type="redirectAction">
+                <param name="actionName">viewStaff</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action>
+    </package>
+</struts>
